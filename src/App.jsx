@@ -1,27 +1,46 @@
+import { useEffect, useMemo, useState } from 'react';
 import './App.css';
 
 function App() {
+
+
+  const [data, setData] = useState([]);
+
+  const [selectedOption, setSelectedOption] = useState();
+
+  const fetchData = async () => {
+    let result = await fetch('https://pokeapi.co/api/v2/pokemon');
+    let resultStream = await result.json();
+    setData(() => {
+      return resultStream.results;
+    });
+  }
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data])
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const changeHandler =(e)=>{
+    setSelectedOption(e.value);
+  }
+
+  
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      hello
+
+      <select >
+        {data.map((inst) => <option value={inst.name}>{inst.name}</option>
+        )}
+      </select>
+
     </div>
   );
 }
